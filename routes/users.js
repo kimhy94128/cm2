@@ -28,6 +28,15 @@ router.get('/regist', (req, res) => {
   });
 });
 
+// 회원 등록
+router.post('/regist', (req, res) => {
+  db.query('INSERT INTO users SET ?;', [req.body], (err, result) => {
+    if(err) console.log(err);
+    const uid = result.insertId;
+    res.redirect(`/attend/${uid}`);
+  })
+});
+
 // 회원 상세
 router.get('/:uid', (req, res) => {
   const { uid } = req.params

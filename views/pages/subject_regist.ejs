@@ -18,7 +18,7 @@
           <div class="card-header bg-white border-0">
             <div class="row align-items-center">
               <div class="col-8">
-                <h3 class="mb-0">회원등록</h3>
+                <h3 class="mb-0">수강등록</h3>
               </div>
             </div>
           </div>
@@ -42,31 +42,16 @@
                 <% } %>
                 <form action="/users/regist" method="POST">
                   <div class="row">
-                    <div class="col-lg-5">
+                    <div class="col-lg-6">
                       <div class="form-group">
                         <label class="form-control-label" for="input-name">이름</label>
-                        <input type="text" id="input-name" class="form-control form-control-alternative" name="name" placeholder="이름" required>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" value="<%= user.name %>" readonly>
                       </div>
                     </div>
-                    <div class="col-lg-5">
+                    <div class="col-lg-6">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-name">생년월일</label>
-                        <input type="date" id="input-name" class="form-control form-control-alternative" name="birth" placeholder="이름" required>
-                      </div>
-                    </div>
-                    <div class="col-lg-2">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-name">성별</label>
-                        <div class="row mt-2">
-                        <div class="custom-control custom-radio ml-3">
-                          <input name="gender" class="custom-control-input" id="customRadio1" type="radio" value="남" required>
-                          <label class="custom-control-label" for="customRadio1">남</label>
-                        </div>
-                        <div class="custom-control custom-radio ml-3">
-                          <input name="gender" class="custom-control-input" id="customRadio2" type="radio" value="여" required>
-                          <label class="custom-control-label" for="customRadio2">여</label>
-                        </div>
-                      </div>  
+                        <label class="form-control-label" for="input-name">구분</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="type" value="">
                       </div>
                     </div>
                     <div class="col-lg-4">
