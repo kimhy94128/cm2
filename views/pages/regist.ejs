@@ -1,0 +1,118 @@
+<% layout('../layout') %> 
+
+<body>
+  <!-- Sidenav -->
+  <% include ../partials/sidebar %>
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Top navbar -->
+    <% include ../partials/navbar %>
+    <!-- Header -->
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
+    <!-- Page content -->
+    <div class="container-fluid mt--7">
+      <!-- Table -->
+
+      <div class="col-xl-12 order-xl-1 mb-5">
+        <div class="card bg-secondary shadow">
+          <div class="card-header bg-white border-0">
+            <div class="row align-items-center">
+              <div class="col-8">
+                <h3 class="mb-0">회원등록</h3>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+              <div class="pl-lg-4">
+                <% if (locals.messages && messages.success) { %>
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= messages.success %>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                <% } %>
+                <% if (locals.messages && messages.errors && messages.errors.databaseError) { %>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= messages.errors %>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                <% } %>
+                <form action="/users/regist" method="POST">
+                  <div class="row">
+                    <div class="col-lg-5">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">이름</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="name" placeholder="이름" value="">
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">생년월일</label>
+                        <input type="date" id="input-name" class="form-control form-control-alternative" name="birth" placeholder="이름" value="">
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">성별</label>
+                        <div class="row mt-2">
+                        <div class="custom-control custom-radio ml-3">
+                          <input name="custom-radio-1" class="custom-control-input" id="customRadio1" type="radio" value="남">
+                          <label class="custom-control-label" for="customRadio1">남</label>
+                        </div>
+                        <div class="custom-control custom-radio ml-3">
+                          <input name="custom-radio-1" class="custom-control-input" id="customRadio2" type="radio" value="여">
+                          <label class="custom-control-label" for="customRadio2">여</label>
+                        </div>
+                      </div>  
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">연락처</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="phone" placeholder="연락처" value="">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">보호자 성함</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="p_name" placeholder="보호자 성함" value="">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">보호자 연락처</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="p_phone" placeholder="보호자 연락처" value="">
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">주소</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="address" placeholder="주소" value="">
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">메모</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="memo" placeholder="메모" value="">
+                      </div>
+                    </div>
+                    <div class="col-lg-12 text-right">
+                        <button type="submit" class="btn btn-primary">등록</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <% include ../partials/footer %>
+    </div>
+  </div>
+
+  <!-- Include scripts -->
+  <% include ../partials/scripts %>
+</body>
