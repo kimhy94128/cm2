@@ -21,7 +21,9 @@
                   <h3 class="mb-0">회원 목록</h3>
                 </div>
                 <div class="col-4 text-right">
-                  <a href="/users/regist" class="btn btn-sm btn-primary">신규등록</a>
+                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#regist-modal">
+                    신규등록
+                  </button>
                 </div>
               </div>
             </div>
@@ -46,19 +48,99 @@
                       <td><%= user.gender %></td>
                       <td><%= user.phone %></td>
                       <td><%= user.regdate %></td>
-                      <td></td>
-                      <td class="text-right">
-                        <div class="dropdown">
-                          <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v"></i>
-                          </a>
-                          <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                      <td><%= user.point %></td>
+                      <td>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#update-modal-<%= user.uid %>">
+                          수정
+                        </button>
+                      </td>
+                       <!-- 업데이트 모달  -->
+            <div class="modal fade" id="update-modal-<%= user.uid %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">회원등록</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/users/update" method="POST">
+                      <input type="hidden" name="uid" value="<%= user.uid %>">
+                      <div class="row">
+                        <div class="col-lg-5">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">이름</label>
+                            <input type="text" id="input-name" class="form-control form-control-alternative" name="name" placeholder="이름" value="<%= user.name %>" required>
                           </div>
                         </div>
-                      </td>
+                        <div class="col-lg-5">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">생년월일</label>
+                            <input type="date" id="input-name" class="form-control form-control-alternative" name="birth" placeholder="생년월일" value="<%= user.birth %>" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-2">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">성별</label>
+                            <div class="row">
+                            <div class="custom-control custom-radio">
+                              <input name="gender" class="custom-control-input" id="customRadio1" type="radio" value="남" <%= user.gender === '남' ? 'checked' : '' %> required>
+                              <label class="custom-control-label mr-1" for="customRadio1">남</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                              <input name="gender" class="custom-control-input" id="customRadio2" type="radio" value="여" <%= user.gender === '여' ? 'checked' : '' %> required>
+                              <label class="custom-control-label" for="customRadio2">여</label>
+                            </div>
+                          </div>  
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">연락처</label>
+                            <input type="phone" id="input-name" class="form-control form-control-alternative" name="phone" placeholder="연락처" value="<%= user.phone %>" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">보호자 성함</label>
+                            <input type="text" id="input-name" class="form-control form-control-alternative" name="p_name" placeholder="보호자 성함" value="<%= user.p_name %>" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">보호자 연락처</label>
+                            <input type="phone" id="input-name" class="form-control form-control-alternative" name="p_phone" placeholder="보호자 연락처" value="<%= user.p_phone %>" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">주소</label>
+                            <input type="text" id="input-name" class="form-control form-control-alternative" name="address" placeholder="주소" value="<%= user.address %>" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">메모</label>
+                            <input type="text" id="input-name" class="form-control form-control-alternative" name="memo" placeholder="메모" value="<%= user.memo %>">
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">등록일자</label>
+                            <input type="date" id="input-name" class="form-control form-control-alternative" name="regdate" value="<%= user.regdate %>" required>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                      <button type="submit" class="btn btn-primary">수정</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
                     </tr>
                   <% }) %>
                 </tbody>
@@ -92,6 +174,94 @@
           </div>
         </div>
       </div>
+
+            <!-- 회원등록 모달  -->
+            <div class="modal fade" id="regist-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">회원등록</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/users/regist" method="POST">
+                      <div class="row">
+                        <div class="col-lg-5">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">이름</label>
+                            <input type="text" id="input-name" class="form-control form-control-alternative" name="name" placeholder="이름" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-5">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">생년월일</label>
+                            <input type="date" id="input-name" class="form-control form-control-alternative" name="birth" placeholder="이름" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-2">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">성별</label>
+                            <div class="row">
+                            <div class="custom-control custom-radio">
+                              <input name="gender" class="custom-control-input" id="customRadio1" type="radio" value="남" required>
+                              <label class="custom-control-label mr-1" for="customRadio1">남</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                              <input name="gender" class="custom-control-input" id="customRadio2" type="radio" value="여" required>
+                              <label class="custom-control-label" for="customRadio2">여</label>
+                            </div>
+                          </div>  
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">연락처</label>
+                            <input type="phone" id="input-name" class="form-control form-control-alternative" name="phone" placeholder="연락처" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">보호자 성함</label>
+                            <input type="text" id="input-name" class="form-control form-control-alternative" name="p_name" placeholder="보호자 성함" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">보호자 연락처</label>
+                            <input type="phone" id="input-name" class="form-control form-control-alternative" name="p_phone" placeholder="보호자 연락처" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">주소</label>
+                            <input type="text" id="input-name" class="form-control form-control-alternative" name="address" placeholder="주소" required>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">메모</label>
+                            <input type="text" id="input-name" class="form-control form-control-alternative" name="memo" placeholder="메모">
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="form-group">
+                            <label class="form-control-label" for="input-name">등록일자</label>
+                            <input type="date" id="input-name" class="form-control form-control-alternative" name="regdate" required>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                      <button type="submit" class="btn btn-primary">등록</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+      
       <!-- Footer -->
       <% include ../partials/footer %>
     </div>

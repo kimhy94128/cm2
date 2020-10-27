@@ -21,15 +21,6 @@ router.get('/', (req, res) => {
 });
 
 // 회원 등록
-router.get('/regist', (req, res) => {
-  db.query(getSidebar, (err, result) => {
-    if(err) console.log(err);
-    const sidebar = result;
-    res.render('pages/regist', { title: '회원등록', sidebar, users: '' })
-  });
-});
-
-// 회원 등록
 router.post('/regist', (req, res) => {
   db.query('INSERT INTO users SET ?;', [req.body], (err, result) => {
     if(err) console.log(err);
@@ -37,6 +28,14 @@ router.post('/regist', (req, res) => {
     res.redirect(`/users/${uid}`);
   })
 });
+
+// 회원정보 수정
+router.post('/update', (req, res) => {
+  db.query('UPDATE users SET ? WHERE uid = ?;', [req.body, req.body.uid], (err, result) => {
+    if(err) console.log(err);
+    res.redirect('/users');
+  })
+})
 
 // 회원 상세
 router.get('/:uid', (req, res) => {

@@ -6,18 +6,22 @@ const db = require('../db');
 // 자주 사용하는 쿼리
 const getSidebar = `SELECT * FROM sidebar;`
 const totalUser = `SELECT * FROM users;`
-const newUser = `SELECT * FROM users;`
+const newUser = `SELECT * FROM users WHERE regdate = CURDATE();`
+const nonpayer = 'SELECT distinct uid FROM attend WHERE pid IS NULL;'
+
 
 // 홈
 router.get('/', (req, res) => {
-  db.query(getSidebar + totalUser, (err, result) => {
-    const [ sidebar, totalUsers ] = result;
+  db.query(getSidebar + totalUser + newUser + nonpayer, (err, result) => {
+    const [ sidebar, totalUsers, newUsers, nonpayers ] = result;
     res.render('pages/dashboard', {
-      title: 'Express',
+      title: '홈',
       sidebar,
       account: req.user,
       users: '',
-      totalUsers
+      totalUsers,
+      newUsers,
+      nonpayers
     });
   });
 });
