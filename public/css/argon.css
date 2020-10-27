@@ -7130,7 +7130,7 @@ button.close
 
     padding: 1.25rem;
 
-    border-bottom: 0 solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
     border-top-left-radius: .4375rem;
     border-top-right-radius: .4375rem; 
 

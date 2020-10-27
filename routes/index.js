@@ -3,18 +3,24 @@ const passport = require('passport');
 const router = express.Router();
 const db = require('../db');
 
+// 자주 사용하는 쿼리
+const getSidebar = `SELECT * FROM sidebar;`
+const totalUser = `SELECT * FROM users;`
+const newUser = `SELECT * FROM users;`
+
 // 홈
 router.get('/', (req, res) => {
-  const getSidebar = `SELECT * FROM sidebar;`
-  db.query(getSidebar, (err, sidebar) => {
-    res.render('pages/dashboard', { title: 'Express', sidebar, account: req.user, users: '' });
-  })
+  db.query(getSidebar + totalUser, (err, result) => {
+    const [ sidebar, totalUsers ] = result;
+    res.render('pages/dashboard', {
+      title: 'Express',
+      sidebar,
+      account: req.user,
+      users: '',
+      totalUsers
+    });
+  });
 });
-
-// router.get('/profile', (req, res, next) => {
-//   res.render('pages/profile', { title: 'Express', user: req.user, account: req.user });
-// });
-
 
 router.get('/tables', (req, res, next) => {
   res.render('pages/tables', { title: 'Express', account: req.user });
@@ -24,15 +30,37 @@ router.get('/login', (req, res, next) => {
   res.render('pages/login', { title: '로그인' });
 });
 
-// router.get('/register', (req, res, next) => {
-//   res.render('pages/register', { title: '회원가입' });
-// });
-
 router.get('/icons', function(req, res, next) {
   const getSidebar = `SELECT * FROM sidebar;`
   db.query(getSidebar, (err, sidebar) => {
     res.render('pages/icons', { title: 'Express', sidebar, users: '' });
   })
 });
+
+router.post('/api', (req, res) => {
+  const { sid1, sid2, sid3 } = req.body;
+  let price = 0;
+  db.query('SELECT * FROM subjects WHERE sid = ?;', [sid1], (err, result) => {
+    if(err) console.log(err);
+    price = result[0].price;
+    
+    if(sid2 !== ''){
+      db.query('SELECT * FROM subjects WHERE sid = ?;', [sid2], (err, result) => {
+        price += result[0].price;
+
+        if(sid3 !== ''){
+          db.query('SELECT * FROM subjects WHERE sid = ?;', [sid3], (err, result) => {
+            price += result[0].price;
+            res.json(price);
+          })
+        } else {
+          res.json(price);
+        }
+      })
+    } else {
+      res.json(price);
+    }
+  })
+})
 
 module.exports = router;

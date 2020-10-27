@@ -40,10 +40,11 @@
                     </button>
                   </div>
                 <% } %>
-                <form action="/users/regist" method="POST">
+                <form action="/attend" method="POST">
                   <div class="row">
                     <div class="col-lg-6">
                       <div class="form-group">
+                        <input type="hidden" name="uid" value="<%= user.uid %>">
                         <label class="form-control-label" for="input-name">이름</label>
                         <input type="text" id="input-name" class="form-control form-control-alternative" value="<%= user.name %>" readonly>
                       </div>
@@ -51,37 +52,78 @@
                     <div class="col-lg-6">
                       <div class="form-group">
                         <label class="form-control-label" for="input-name">구분</label>
-                        <input type="text" id="input-name" class="form-control form-control-alternative" name="type" value="">
+                        <div class="row mt-2">
+                        <div class="custom-control custom-radio ml-3">
+                          <input name="gender" class="custom-control-input" id="customRadio1" type="radio" value="남" <%= user.type === "전문반" ? 'checked' : '' %> required>
+                          <label class="custom-control-label" for="customRadio1">전문반</label>
+                        </div>
+                        <div class="custom-control custom-radio ml-3">
+                          <input name="gender" class="custom-control-input" id="customRadio2" type="radio" value="여" <%= user.type === "취미반" ? 'checked' : '' %> required>
+                          <label class="custom-control-label" for="customRadio2">취미반</label>
+                        </div>
+                      </div>  
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-name">연락처</label>
-                        <input type="text" id="input-name" class="form-control form-control-alternative" name="phone" placeholder="연락처" required>
+                        <label class="form-control-label" for="input-name">수강 과목 1</label>
+                        <select name="" id="" class="form-control form-control-alternative">
+                          <option value="">선택</option>
+                        </select>
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-name">보호자 성함</label>
-                        <input type="text" id="input-name" class="form-control form-control-alternative" name="p_name" placeholder="보호자 성함" required>
+                        <label class="form-control-label" for="input-name">수강 과목 2</label>
+                        <select name="" id="" class="form-control form-control-alternative">
+                          <option value="">선택 1</option>
+                        </select>
                       </div>
                     </div>
                     <div class="col-lg-4">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-name">보호자 연락처</label>
-                        <input type="text" id="input-name" class="form-control form-control-alternative" name="p_phone" placeholder="보호자 연락처" required>
+                        <label class="form-control-label" for="input-name">수강 과목 3</label>
+                        <select name="" id="" class="form-control form-control-alternative">
+                          <option value="">선택 1</option>
+                        </select>
                       </div>
                     </div>
-                    <div class="col-lg-12">
+                    <div class="col-lg-8">
                       <div class="form-group">
-                        <label class="form-control-label" for="input-name">주소</label>
-                        <input type="text" id="input-name" class="form-control form-control-alternative" name="address" placeholder="주소" required>
-                      </div>
-                    </div>
-                    <div class="col-lg-12">
-                      <div class="form-group">
-                        <label class="form-control-label" for="input-name">메모</label>
+                        <label class="form-control-label" for="input-name">수강료 총액</label>
                         <input type="text" id="input-name" class="form-control form-control-alternative" name="memo" placeholder="메모" required>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">결제내용</label>
+                        <select name="" id="" class="form-control form-control-alternative">
+                          <option value="">직접 입력</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">결제수단</label>
+                        <select name="" id="" class="form-control form-control-alternative">
+                          <option>선택</option>
+                          <option value="카드">카드</option>
+                          <option value="현금">현금</option>
+                          <option value="포인트">포인트</option>
+                          <option value="울산페이">울산페이</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">결제일자</label>
+                        <input type="date" id="input-name" class="form-control form-control-alternative">
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">결제금액</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative">
                       </div>
                     </div>
                     <div class="col-lg-12 text-right">
