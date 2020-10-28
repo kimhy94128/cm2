@@ -17,7 +17,8 @@ router.post('/', (req, res) => {
       sid: subject1,
       sid2: subject2 !== ''? subject2 : null,
       sid3: subject3 !== ''? subject2 : null,
-      total_price, started, ended, uid, pid
+      pid: pid !== '' ? pid : null,
+      total_price, started, ended, uid,
     }
     db.query(attend, datas, (err, result) => {
       if(err) console.log(err);
