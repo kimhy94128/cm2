@@ -37,6 +37,28 @@ router.post('/update', (req, res) => {
   })
 })
 
+router.post('/pay', (req, res) => {
+  const { uid, att_no, type, date, amount } = req.body;
+  const data = {
+    uid, type, date, amount,
+    att_no: att_no === '' ? null : att_no
+  }
+  db.query(`INSERT INTO payment SET ?;`, data, (err, result) => {
+    if(err) console.log(err);
+    console.log(result);
+
+    if(att_no !== null){
+      const pid = result.insertId;
+      db.query('UPDATE attend SET pid = ? WHERE no = ?;', [pid, att_no], (err, result) => {
+        if(err) console.log(err);
+        res.redirect(req.headers.referer)
+      })
+    } else {
+      res.redirect(req.headers.referer)
+    }
+  })
+})
+
 // 회원 상세
 router.get('/:uid', (req, res) => {
   const { uid } = req.params
@@ -44,10 +66,11 @@ router.get('/:uid', (req, res) => {
   const typeList = `SELECT distinct type FROM subjects;`
   const subjectList = `SELECT * FROM subjects;`
   const paymentList = `SELECT pid, payment.uid, payment.type, DATE_FORMAT(date,'%Y-%m-%d') AS date, name, amount FROM payment LEFT JOIN users ON payment.uid = users.uid WHERE att_no is null;`
-  db.query(getSidebar + getUsers + typeList + subjectList + paymentList, [uid], (err, result) => {
+  const attendList = `SELECT no, s_name, DATE_FORMAT(started,'%Y-%m-%d') AS started, DATE_FORMAT(ended,'%Y-%m-%d') AS ended, total_price FROM attend LEFT JOIN subjects ON attend.sid = subjects.sid WHERE uid = ? AND pid is Null ORDER BY started;`
+  db.query(getSidebar + getUsers + typeList + subjectList + paymentList + attendList, [uid, uid], (err, result) => {
     if(err) console.log(err);
-    const [ sidebar, users, types, subject, payment ] = result;
-    res.render('pages/profile', { title: `회원상세`, sidebar, user: users[0], types, subject, payment })
+    const [ sidebar, users, types, subject, payment, attend ] = result;
+    res.render('pages/profile', { title: `회원상세`, sidebar, user: users[0], types, subject, payment, attend })
   });
 });
 

@@ -29,7 +29,9 @@
                 <button type="button" class="btn btn-sm btn-info mr-4" data-toggle="modal" data-target="#attend-modal">
                   수강등록
                 </button>
-                <a href="#" class="btn btn-sm btn-default float-right">수강료 결제</a>
+                <button type="button" class="btn btn-sm btn-default float-right" data-toggle="modal" data-target="#pay-modal">
+                  수강료 결제
+                </button>
               </div>
             </div>
             <div class="card-body pt-0 pt-md-4">
@@ -132,7 +134,7 @@
                     <div class="col-lg-12">
                       <div class="form-group">
                         <label class="form-control-label" for="input-name">메모</label>
-                        <input type="text" id="input-name" class="form-control form-control-alternative" name="name" placeholder="이름" value="메모를 입력하세요">
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="name" placeholder="이름" value="<%= user.memo %>">
                       </div>
                     </div>
                   </div>
@@ -330,6 +332,9 @@
           </div>
         </div>
       </div>
+
+                    <!-- 결제 모달  -->
+                    <% include ../partials/paymodal %>
 
       <!-- Footer -->
       <% include ../partials/footer %>

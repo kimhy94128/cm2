@@ -5,6 +5,23 @@ const db = require('../db');
 // 자주 사용하는 쿼리
 const getSidebar = `SELECT * FROM sidebar;`
 
+router.get('/', (req, res) => {
+  const attendList = `SELECT no, users.uid, name, subjects.type, s_name, payment.type AS ptype, amount, total_price, DATE_FORMAT(started,'%Y-%m-%d') AS started, DATE_FORMAT(ended,'%Y-%m-%d') AS ended, DATE_FORMAT(date,'%Y-%m-%d') AS date FROM attend
+  LEFT JOIN users ON attend.uid = users.uid
+  LEFT JOIN subjects ON attend.sid = subjects.sid
+  LEFT OUTER JOIN payment ON attend.no = payment.att_no
+  ORDER BY started DESC;`
+  db.query(getSidebar + attendList, (err, result) => {
+    if(err) console.log(err);
+    const [ sidebar, attend ] = result;
+    res.render('pages/attend', {
+      title: '수강목록',
+      sidebar,
+      attend
+    })
+  })
+})
+
 router.post('/', (req, res) => {
   const { uid, type, major, subject1, subject2, subject3, total_price, started, ended, pid } = req.body;
   const updateType = 'UPDATE users SET type = ?, major = ? WHERE uid = ?;'

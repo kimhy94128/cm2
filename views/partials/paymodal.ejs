@@ -1,0 +1,58 @@
+<div class="modal fade" id="pay-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">수업등록</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/users/pay" method="POST">
+          <input type="hidden" name="uid" value="<%= user.uid %>">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label class="form-control-label" for="input-name">수강내용</label>
+                <select name="att_no" class="form-control form-control-alternative">
+                  <option value="">선택</option>
+                  <% attend.forEach(list => { %>
+                    <option value="<%= list.no %>"><%= list.s_name %> / 시작일 : <%= list.started %> / 종료일 : <%= list.ended %> / <%= list.total_price %></option>
+                  <% }) %> 
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label class="form-control-label" for="input-name">결제수단</label>
+                <select name="type" id="" class="form-control form-control-alternative">
+                  <option>선택</option>
+                  <option value="카드">카드</option>
+                  <option value="현금">현금</option>
+                  <option value="포인트">포인트</option>
+                  <option value="울산페이">울산페이</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label class="form-control-label" for="input-name">결제일자</label>
+                <input type="date" name="date" id="input-name" class="form-control form-control-alternative">
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-group">
+                <label class="form-control-label" for="input-name">결제금액</label>
+                <input type="text" name="amount" id="input-name" class="form-control form-control-alternative">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+          <button type="submit" class="btn btn-primary">등록</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
