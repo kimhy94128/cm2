@@ -47,83 +47,101 @@
                   <td><%= list.type %></td>
                   <td><%= list.s_name %></td>
                   <td><%= list.name %></td>
-                  <td>oo외 1명</td>
+                  <td>
+                    <% users.forEach(user => { %>
+                      <% if(list.sid === user.sid){ %>
+                        <%= user.count %>명
+                      <% } %> 
+                    <% }) %>
+                  </td>
                   <td><%= list.price %></td>
                   <td><%= list.week %></td>
                   <td><%= list.time %></td>
                   <td>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#update-modal-<%= list.sid %>">
-                      수정
-                    </button>
+                    <div class="dropdown">
+                      <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#update-modal-<%= list.sid %>">수정</a>
+                        <a href="rollbook/<%= list.sid %>" class="dropdown-item">출석부</a>
+                      </div>
+                    </div>
                   </td>
                   <!-- 수업 수정 모달  -->
                   <form action="/subject/update" method="POST">
-      <div class="modal fade" id="update-modal-<%= list.sid %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">수업등록</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form action="/subject/regist" method="POST">
-                <input type="hidden" name="sid" value="<%= list.sid %>">
-                <div class="row">
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-name">구분</label>
-                      <input type="text" id="input-name" class="form-control form-control-alternative" name="type" value="<%= list.type %>" placeholder="구분" required>
+                    <div class="modal fade" id="update-modal-<%= list.sid %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">수업등록</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form action="/subject/regist" method="POST">
+                              <input type="hidden" name="sid" value="<%= list.sid %>">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                    <label class="form-control-label" for="input-name">구분</label>
+                                    <input type="text" id="input-name" class="form-control form-control-alternative" name="type" value="<%= list.type %>" placeholder="구분" required>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                    <label class="form-control-label" for="input-name">수업명</label>
+                                    <input type="text" id="input-name" class="form-control form-control-alternative" name="s_name" value="<%= list.s_name %>" placeholder="수업명" required>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                    <label class="form-control-label" for="input-name">강사</label>
+                                    <select class="form-control form-control-alternative" name="tid" required>
+                                      <option>선택</option>
+                                      <% teachers.forEach(teacher => { %>
+                                        <option value="<%= teacher.tid %>" <%= list.tid === teacher.tid ? 'selected' : '' %>><%= teacher.name %></option>
+                                      <% }) %> 
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                    <label class="form-control-label" for="input-name">수강료</label>
+                                    <input type="text" id="input-name" class="form-control form-control-alternative" name="price" value="<%= list.price %>" placeholder="수강료" required>
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                    <label class="form-control-label" for="input-name">요일</label>
+                                    <div class="btn-group btn-group-toggle mt-2" data-toggle="buttons">
+                                      <% weeks.forEach(week => { %>
+                                        <label class="btn btn-secondary btn-sm <%= list.week.indexOf(week) > -1 ? 'active' : '' %>">
+                                          <input type="checkbox" name="week" value="<%= week %>" autocomplete="off" <%= list.week.indexOf(week) > -1 ? 'checked' : '' %>><%= week %>
+                                        </label>
+                                      <% }) %>
+                                    </div>  
+                                  </div>
+                                </div>
+                                <div class="col-lg-6">
+                                  <div class="form-group">
+                                    <label class="form-control-label" for="input-name">시간</label>
+                                    <input type="time" id="input-name" class="form-control form-control-alternative" name="time" value="<%= list.time %>" placeholder="시간" required>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                              <button type="submit" class="btn btn-primary">등록</button>
+                            </div>
+                            </tr>
+                          </form>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-name">수업명</label>
-                      <input type="text" id="input-name" class="form-control form-control-alternative" name="s_name" value="<%= list.s_name %>" placeholder="수업명" required>
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-name">강사</label>
-                      <select class="form-control form-control-alternative" name="tid" required>
-                        <option>선택</option>
-                        <% teachers.forEach(teacher => { %>
-                          <option value="<%= teacher.tid %>" <%= list.tid === teacher.tid ? 'selected' : '' %>><%= teacher.name %></option>
-                        <% }) %> 
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-name">수강료</label>
-                      <input type="text" id="input-name" class="form-control form-control-alternative" name="price" value="<%= list.price %>" placeholder="수강료" required>
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-name">요일</label>
-                      <input type="text" id="input-name" class="form-control form-control-alternative" name="week" value="<%= list.week %>" placeholder="요일" required>
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-name">시간</label>
-                      <input type="time" id="input-name" class="form-control form-control-alternative" name="time" value="<%= list.time %>" placeholder="시간" required>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-primary">등록</button>
-              </div>
-              </tr>
-            </form>
-          </div>
-        </div>
-      </div>
-    </form>
+                  </form>
                 <% }) %> 
               </tbody>
             </table>
@@ -202,7 +220,29 @@
                   <div class="col-lg-6">
                     <div class="form-group">
                       <label class="form-control-label" for="input-name">요일</label>
-                      <input type="text" id="input-name" class="form-control form-control-alternative" name="week" placeholder="요일" required>
+                      <div class="btn-group btn-group-toggle mt-2" data-toggle="buttons">
+                        <label class="btn btn-secondary btn-sm">
+                          <input type="checkbox" name="week" value="월" autocomplete="off"> 월
+                        </label>
+                        <label class="btn btn-secondary btn-sm">
+                          <input type="checkbox" name="week" value="화" autocomplete="off"> 화
+                        </label>
+                        <label class="btn btn-secondary btn-sm">
+                          <input type="checkbox" name="week" value="수" autocomplete="off"> 수
+                        </label>
+                        <label class="btn btn-secondary btn-sm">
+                          <input type="checkbox" name="week" value="목" autocomplete="off"> 목
+                        </label>
+                        <label class="btn btn-secondary btn-sm">
+                          <input type="checkbox" name="week" value="금" autocomplete="off"> 금
+                        </label>
+                        <label class="btn btn-secondary btn-sm">
+                          <input type="checkbox" name="week" value="토" autocomplete="off"> 토
+                        </label>
+                        <label class="btn btn-secondary btn-sm">
+                          <input type="checkbox" name="week" value="일" autocomplete="off"> 일
+                        </label>
+                      </div>
                     </div>
                   </div>
                   <div class="col-lg-6">

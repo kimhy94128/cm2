@@ -14,6 +14,7 @@ const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 const subjectRouter = require('./routes/subject');
 const attendRouter = require('./routes/attend');
+const rollbookRouter = require('./routes/rollbook');
 const teachersRouter = require('./routes/teachers');
 
 const app = express();
@@ -46,6 +47,7 @@ app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/subject', subjectRouter);
 app.use('/attend', attendRouter);
+app.use('/rollbook', rollbookRouter);
 app.use('/teachers', teachersRouter);
 
 // catch 404 and forward to error handler
