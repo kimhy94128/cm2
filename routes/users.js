@@ -10,9 +10,9 @@ const totalUser = `SELECT * FROM users;`
 router.get('/', (req, res) => {
   let search = '';
   if(req.query.q !== undefined){
-    search = `WHERE name like '%${req.query.q}%'`
+    search = `AND name like '%${req.query.q}%'`
   };
-  const getUsers = `SELECT uid, name, gender, phone, DATE_FORMAT(birth,'%Y-%m-%d') AS birth, DATE_FORMAT(regdate,'%Y-%m-%d') AS regdate, address, p_name, p_phone, memo, type, major, status, point from users ${search};`
+  const getUsers = `SELECT uid, name, gender, phone, DATE_FORMAT(birth,'%Y-%m-%d') AS birth, DATE_FORMAT(regdate,'%Y-%m-%d') AS regdate, address, p_name, p_phone, memo, type, major, status, point from users WHERE isDeleted = 0 ${search};`
   db.query(getSidebar + getUsers + totalUser, (err, result) => {
     if(err) console.log(err);
     const [ sidebar, users, totalUsers ] = result;
@@ -56,6 +56,15 @@ router.post('/pay', (req, res) => {
     } else {
       res.redirect(req.headers.referer)
     }
+  })
+})
+
+// 회원 삭제
+router.post('/delete', (req, res) => {
+  const { uid } = req.body;
+  db.query('UPDATE users SET isDeleted = 1 WHERE uid = ?;', [uid], (err, result) => {
+    if(err) console.log(err);
+    res.redirect('/users');
   })
 })
 

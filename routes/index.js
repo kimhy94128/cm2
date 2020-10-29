@@ -8,12 +8,15 @@ const getSidebar = `SELECT * FROM sidebar;`
 const totalUser = `SELECT * FROM users;`
 const newUser = `SELECT * FROM users WHERE regdate = CURDATE();`
 const nonpayer = 'SELECT distinct uid FROM attend WHERE pid IS NULL;'
+const subjects = `SELECT * FROM subjects`
+const nowTotal = `SELECT attend.sid as sid, s_name, type, count(*) as count from subjects LEFT JOIN attend on subjects.sid = attend.sid WHERE MONTH(started) = MONTH(NOW()) GROUP BY subjects.sid;`
+const prevTotal = `SELECT attend.sid as sid, s_name, type, count(*) as count from subjects LEFT JOIN attend on subjects.sid = attend.sid  WHERE MONTH(started) = MONTH(NOW())-1 GROUP BY sid;`
 
 
 // 홈
 router.get('/', (req, res) => {
-  db.query(getSidebar + totalUser + newUser + nonpayer, (err, result) => {
-    const [ sidebar, totalUsers, newUsers, nonpayers ] = result;
+  db.query(getSidebar + totalUser + newUser + nonpayer + nowTotal + prevTotal + subjects , (err, result) => {
+    const [ sidebar, totalUsers, newUsers, nonpayers, nowTotals, prevTotals, subject ] = result;
     res.render('pages/dashboard', {
       title: '홈',
       sidebar,
@@ -21,7 +24,10 @@ router.get('/', (req, res) => {
       users: '',
       totalUsers,
       newUsers,
-      nonpayers
+      nonpayers,
+      nowTotals,
+      prevTotals,
+      subject
     });
   });
 });
