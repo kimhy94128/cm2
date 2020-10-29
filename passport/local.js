@@ -7,7 +7,7 @@ module.exports = new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, (req, userID, password, done) => {
-  db.query('SELECT * FROM users WHERE userID = ?;', [userID], async (err, user) => {
+  db.query('SELECT * FROM account WHERE userID = ?;', [userID], async (err, user) => {
     if(user[0] === undefined){
       done(null, false, {message: '등록되지 않은 회원입니다.'})
     } else {

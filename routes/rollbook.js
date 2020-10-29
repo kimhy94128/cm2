@@ -1,20 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { isLoggedIn, isNotLoggedIn } = require('./middleware');
 
 // 자주 사용하는 쿼리
 const getSidebar = `SELECT * FROM sidebar;`
 
 
 // 출석부
-router.get('/:sid', (req, res) => {
+router.get('/:sid', isLoggedIn, (req, res) => {
   const {sid} = req.params;
   const month = req.query.month || new Date().getMonth();
   const attendList = `SELECT name, subjects.type, s_name, DATE_FORMAT(started,'%m/%d') AS started, DATE_FORMAT(ended,'%m/%d') AS ended FROM attend
   LEFT JOIN users ON users.uid = attend.uid 
   LEFT JOIN subjects ON attend.sid = subjects.sid
-  WHERE attend.sid = ? AND MONTH(started)-1 = ?;`
-  const titleText = `SELECT distinct s_name, type from attend left join subjects on attend.sid = subjects.sid WHERE subjects.sid = ?;`
+  WHERE attend.sid = ? AND MONTH(started)-1 = ?
+  AND attend.account = '${req.user.userID}';`
+  const titleText = `SELECT distinct s_name, type from attend left join subjects on attend.sid = subjects.sid WHERE subjects.sid = ? AND attend.account = '${req.user.userID}';`
   db.query(getSidebar + attendList + titleText, [sid, month, sid], (err, result) => {
     if(err) console.log(err);
     const [sidebar, users, tit] = result;
@@ -36,6 +38,7 @@ router.get('/:sid', (req, res) => {
 
     res.render('pages/rollbook', {
       title,
+      account: req.user,
       sidebar,
       users,
       month,

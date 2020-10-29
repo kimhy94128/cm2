@@ -8,15 +8,14 @@ const bcrypt = require('bcrypt');
 router.post('/register', async (req, res) => {
   const { userID, password, name} = req.body;
   const hash = await bcrypt.hash(password, 12);
-  const confirm = `SELECT * FROM users WHERE id = ?;`
-  const regist = `INSERT INTO users SET ?;`
+  const confirm = `SELECT * FROM account WHERE userID = ?;`
+  const regist = `INSERT INTO account SET ?;`
   const data = { userID, password: hash, name }
 
   db.query(confirm, [userID], (err, user) => {
     if(err) console.log(err);
     if(user[0] === undefined){
       db.query(regist, data, (err, result) => {
-        console.log(result);
         res.redirect('/login');
       })
     } else {

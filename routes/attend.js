@@ -1,28 +1,31 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const { isLoggedIn, isNotLoggedIn } = require('./middleware');
 
 // 자주 사용하는 쿼리
 const getSidebar = `SELECT * FROM sidebar;`
 
-router.get('/', (req, res) => {
+router.get('/', isLoggedIn, (req, res) => {
   const attendList = `SELECT no, users.uid, name, subjects.type, s_name, payment.type AS ptype, amount, total_price, DATE_FORMAT(started,'%Y-%m-%d') AS started, DATE_FORMAT(ended,'%Y-%m-%d') AS ended, DATE_FORMAT(date,'%Y-%m-%d') AS date FROM attend
   LEFT JOIN users ON attend.uid = users.uid
   LEFT JOIN subjects ON attend.sid = subjects.sid
   LEFT OUTER JOIN payment ON attend.no = payment.att_no
+  WHERE attend.account = '${req.user.userID}'
   ORDER BY started DESC;`
   db.query(getSidebar + attendList, (err, result) => {
     if(err) console.log(err);
     const [ sidebar, attend ] = result;
     res.render('pages/attend', {
       title: '수강목록',
+      account: req.user,
       sidebar,
       attend
     })
   })
 })
 
-router.post('/', (req, res) => {
+router.post('/', isLoggedIn, (req, res) => {
   const { uid, type, major, subject1, subject2, subject3, total_price, started, ended, pid } = req.body;
   const updateType = 'UPDATE users SET type = ?, major = ? WHERE uid = ?;'
   const attend = 'INSERT INTO attend SET ?;'
@@ -36,6 +39,7 @@ router.post('/', (req, res) => {
       sid3: subject3 !== ''? subject2 : null,
       pid: pid !== '' ? pid : null,
       total_price, started, ended, uid,
+      account: req.user.userID
     }
     db.query(attend, datas, (err, result) => {
       if(err) console.log(err);
@@ -51,9 +55,9 @@ router.post('/', (req, res) => {
   })
 })
 
-router.get('/:uid', (req, res) => {
+router.get('/:uid', isLoggedIn, (req, res) => {
 const { uid } = req.params;
-  const userName = `SELECT name, type FROM users WHERE uid = ?;`
+  const userName = `SELECT name, type FROM users WHERE uid = ? AND account = '${req.user.userID}';`
   db.query(getSidebar + userName, [uid], (err, result) => {
     if(err) console.log(err);
     const [ sidebar, user ] = result;
