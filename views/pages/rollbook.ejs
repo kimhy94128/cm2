@@ -18,12 +18,21 @@
             <div class="card-header border-0">
               <div class="row align-items-center">
                 <div class="col-8">
-                  <h3 class="mb-0">회원 목록</h3>
+                  <h3 class="mb-0">출석부</h3>
                 </div>
                 <div class="col-4 text-right">
-                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#regist-modal">
-                    신규등록
-                  </button>
+                  <select name="month">
+                    <option>선택</option>
+                    <% for(i=0; i<12; i++){ %>
+                      <option value="<%= i %>"
+                        <% if(month && month == i){ %>
+                          selected
+                        <% } else if (!month && new Date().getMonth() === i) { %>
+                          selected
+                        <% } %>
+                        ><%= i+1 %></option>
+                    <% } %> 
+                  </select> 월
                 </div>
               </div>
             </div>
@@ -89,6 +98,11 @@
       </div>
 
     
+      <script>
+        document.querySelector('select[name=month]').addEventListener('change', function(){
+          location.search = 'month=' + this.value;
+        })
+      </script>
       
       <!-- Footer -->
       <% include ../partials/footer %>
