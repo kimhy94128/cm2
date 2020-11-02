@@ -54,66 +54,6 @@
                         수정
                         </button>
                       </td>
-                            <!-- 강사정보 편집 모달  -->
-      <div class="modal fade" id="update-modal-tid<%= teacher.tid %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">강사정보</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form action="/teachers/update" method="POST">
-              <div class="row">
-                <div class="col-lg-5">
-                  <div class="form-group">
-                      <input type="hidden" name="tid" value="<%= teacher.tid %>">
-                      <label class="form-control-label" for="input-name">이름</label>
-                      <input type="text" id="input-name" class="form-control form-control-alternative" name="name" placeholder="이름" value="<%= teacher.name %>" required>
-                    </div>
-                  </div>
-                  <div class="col-lg-5">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-name">생년월일</label>
-                      <input type="date" id="input-name" class="form-control form-control-alternative" name="birth" placeholder="생년월일" value="<%= teacher.birth %>" required>
-                    </div>
-                  </div>
-                  <div class="col-lg-2">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-name">성별</label>
-                      <input type="text" id="input-name" class="form-control form-control-alternative" name="gender" placeholder="성별" value="<%= teacher.gender %>" required>
-                    </div>
-                  </div>
-                  <div class="col-lg-12">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-name">연락처</label>
-                      <input type="phone" id="input-name" class="form-control form-control-alternative" name="phone" placeholder="연락처" value="<%= teacher.phone %>"required>
-                    </div>
-                  </div>
-                  <div class="col-lg-8">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-name">계좌번호</label>
-                      <input type="text" id="input-name" class="form-control form-control-alternative" name="account_number" placeholder="계좌번호" value="<%= teacher.account_number %>" required>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="form-group">
-                      <label class="form-control-label" for="input-name">은행</label>
-                      <input type="text" id="input-name" class="form-control form-control-alternative" name="bank" placeholder="은행" value="<%= teacher.bank %>" required>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-primary">수정</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
                     </tr>
                   <% }) %>
                 </tbody>
@@ -207,6 +147,68 @@
           </div>
         </div>
       </div>
+        <% teachers.forEach(teacher => { %>
+        <!-- 강사정보 편집 모달  -->
+        <div class="modal fade" id="update-modal-tid<%= teacher.tid %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">강사정보</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="/teachers/update" method="POST">
+                <div class="row">
+                  <div class="col-lg-5">
+                    <div class="form-group">
+                        <input type="hidden" name="tid" value="<%= teacher.tid %>">
+                        <label class="form-control-label" for="input-name">이름</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="name" placeholder="이름" value="<%= teacher.name %>" required>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">생년월일</label>
+                        <input type="date" id="input-name" class="form-control form-control-alternative" name="birth" placeholder="생년월일" value="<%= teacher.birth %>" required>
+                      </div>
+                    </div>
+                    <div class="col-lg-2">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">성별</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="gender" placeholder="성별" value="<%= teacher.gender %>" required>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">연락처</label>
+                        <input type="phone" id="input-name" class="form-control form-control-alternative" name="phone" placeholder="연락처" value="<%= teacher.phone %>"required>
+                      </div>
+                    </div>
+                    <div class="col-lg-8">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">계좌번호</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="account_number" placeholder="계좌번호" value="<%= teacher.account_number %>" required>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">은행</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="bank" placeholder="은행" value="<%= teacher.bank %>" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                  <button type="submit" class="btn btn-primary">수정</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }) %> 
 
       <!-- Footer -->
       <% include ../partials/footer %>

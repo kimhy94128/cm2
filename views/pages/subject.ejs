@@ -68,80 +68,7 @@
                       </div>
                     </div>
                   </td>
-                  <!-- 수업 수정 모달  -->
-                  <form action="/subject/update" method="POST">
-                    <div class="modal fade" id="update-modal-<%= list.sid %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">수업등록</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <form action="/subject/regist" method="POST">
-                              <input type="hidden" name="sid" value="<%= list.sid %>">
-                              <div class="row">
-                                <div class="col-lg-6">
-                                  <div class="form-group">
-                                    <label class="form-control-label" for="input-name">구분</label>
-                                    <input type="text" id="input-name" class="form-control form-control-alternative" name="type" value="<%= list.type %>" placeholder="구분" required>
-                                  </div>
-                                </div>
-                                <div class="col-lg-6">
-                                  <div class="form-group">
-                                    <label class="form-control-label" for="input-name">수업명</label>
-                                    <input type="text" id="input-name" class="form-control form-control-alternative" name="s_name" value="<%= list.s_name %>" placeholder="수업명" required>
-                                  </div>
-                                </div>
-                                <div class="col-lg-6">
-                                  <div class="form-group">
-                                    <label class="form-control-label" for="input-name">강사</label>
-                                    <select class="form-control form-control-alternative" name="tid" required>
-                                      <option>선택</option>
-                                      <% teachers.forEach(teacher => { %>
-                                        <option value="<%= teacher.tid %>" <%= list.tid === teacher.tid ? 'selected' : '' %>><%= teacher.name %></option>
-                                      <% }) %> 
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="col-lg-6">
-                                  <div class="form-group">
-                                    <label class="form-control-label" for="input-name">수강료</label>
-                                    <input type="text" id="input-name" class="form-control form-control-alternative" name="price" value="<%= list.price %>" placeholder="수강료" required>
-                                  </div>
-                                </div>
-                                <div class="col-lg-6">
-                                  <div class="form-group">
-                                    <label class="form-control-label" for="input-name">요일</label>
-                                    <div class="btn-group btn-group-toggle mt-2" data-toggle="buttons">
-                                      <% weeks.forEach(week => { %>
-                                        <label class="btn btn-secondary btn-sm <%= list.week.indexOf(week) > -1 ? 'active' : '' %>">
-                                          <input type="checkbox" name="week" value="<%= week %>" autocomplete="off" <%= list.week.indexOf(week) > -1 ? 'checked' : '' %>><%= week %>
-                                        </label>
-                                      <% }) %>
-                                    </div>  
-                                  </div>
-                                </div>
-                                <div class="col-lg-6">
-                                  <div class="form-group">
-                                    <label class="form-control-label" for="input-name">시간</label>
-                                    <input type="time" id="input-name" class="form-control form-control-alternative" name="time" value="<%= list.time %>" placeholder="시간" required>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                              <button type="submit" class="btn btn-primary">등록</button>
-                            </div>
-                            </tr>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
+                  </tr>
                 <% }) %> 
               </tbody>
             </table>
@@ -261,6 +188,83 @@
           </div>
         </div>
       </div>
+
+      <!-- 수업 수정 모달  -->
+      <% subject.forEach(list => { %>
+      <form action="/subject/update" method="POST">
+        <div class="modal fade" id="update-modal-<%= list.sid %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">수업등록</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="/subject/regist" method="POST">
+                  <input type="hidden" name="sid" value="<%= list.sid %>">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">구분</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="type" value="<%= list.type %>" placeholder="구분" required>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">수업명</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="s_name" value="<%= list.s_name %>" placeholder="수업명" required>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">강사</label>
+                        <select class="form-control form-control-alternative" name="tid" required>
+                          <option>선택</option>
+                          <% teachers.forEach(teacher => { %>
+                            <option value="<%= teacher.tid %>" <%= list.tid === teacher.tid ? 'selected' : '' %>><%= teacher.name %></option>
+                          <% }) %> 
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">수강료</label>
+                        <input type="text" id="input-name" class="form-control form-control-alternative" name="price" value="<%= list.price %>" placeholder="수강료" required>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">요일</label>
+                        <div class="btn-group btn-group-toggle mt-2" data-toggle="buttons">
+                          <% weeks.forEach(week => { %>
+                            <label class="btn btn-secondary btn-sm <%= list.week.indexOf(week) > -1 ? 'active' : '' %>">
+                              <input type="checkbox" name="week" value="<%= week %>" autocomplete="off" <%= list.week.indexOf(week) > -1 ? 'checked' : '' %>><%= week %>
+                            </label>
+                          <% }) %>
+                        </div>  
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="form-group">
+                        <label class="form-control-label" for="input-name">시간</label>
+                        <input type="time" id="input-name" class="form-control form-control-alternative" name="time" value="<%= list.time %>" placeholder="시간" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                  <button type="submit" class="btn btn-primary">등록</button>
+                </div>
+                </tr>
+              </form>
+            </div>
+          </div>
+        </div>
+      </form>
+      <% }) %>
 
       <!-- Footer -->
       <% include ../partials/footer %>
