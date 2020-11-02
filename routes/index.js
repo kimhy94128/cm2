@@ -9,25 +9,43 @@ const getSidebar = `SELECT * FROM sidebar;`
 
 // 홈
 router.get('/', isLoggedIn, (req, res) => {
-  const totalUser = `SELECT * FROM users WHERE account = '${req.user.userID}';`
-  const newUser = `SELECT * FROM users WHERE regdate = CURDATE() AND account = '${req.user.userID}';`
-  const nonpayer = `SELECT distinct uid FROM attend WHERE pid IS NULL AND account = '${req.user.userID}';`
-  const subjects = `SELECT * FROM subjects WHERE account = '${req.user.userID}'`
-  const nowTotal = `SELECT attend.sid as sid, s_name, type, count(*) as count from subjects LEFT JOIN attend on subjects.sid = attend.sid WHERE MONTH(started) = MONTH(NOW()) AND account = '${req.user.userID}' GROUP BY subjects.sid;`
-  const prevTotal = `SELECT attend.sid as sid, s_name, type, count(*) as count from subjects LEFT JOIN attend on subjects.sid = attend.sid  WHERE MONTH(started) = MONTH(NOW())-1 AND account = '${req.user.userID}' GROUP BY sid;`
-  db.query(getSidebar + totalUser + newUser + nonpayer + nowTotal + prevTotal + subjects , (err, result) => {
-    const [ sidebar, totalUsers, newUsers, nonpayers, nowTotals, prevTotals, subject ] = result;
+  const account = req.user.userID;
+  const weeks = ['일','월', '화', '수', '목', '금', '토'];
+  const d = new Date().getDay()
+
+  let totalUsers = `SELECT distinct uid FROM attend WHERE account = '${account}' AND MONTH(started) = MONTH(NOW());`
+  let totalUsersPrev = `SELECT distinct uid FROM attend WHERE account = '${account}' AND MONTH(started) = MONTH(NOW())-1;`
+  let newUsers = `SELECT * FROM users WHERE MONTH(regdate) = MONTH(NOW()) AND account = '${account}';`
+  let newUsersPrev = `SELECT * FROM users WHERE MONTH(regdate) = MONTH(NOW())-1 AND account = '${account}';`
+  let nonpayers = `SELECT distinct uid FROM attend WHERE pid IS NULL AND account = '${account}';`
+  let todayUsers = `SELECT distinct attend.uid, subjects.s_name, week FROM attend LEFT JOIN users ON attend.uid = users.uid LEFT JOIN subjects ON attend.sid = subjects.sid WHERE week like '%${weeks[d]}%' AND attend.account = '${account}';`
+  let todaySubjects = `SELECT * FROM subjects WHERE week like '%${weeks[d]}%' AND account = '${account}';`
+  let subjects = `SELECT * FROM subjects WHERE account = '${account}';`
+  let usersPerSubjects = `SELECT sid, count(*) as count FROM attend WHERE MONTH(started) = MONTH(NOW()) AND account = '${account}' GROUP BY sid;`
+  let usersPerSubjectsPrev = `SELECT sid, count(*) as count FROM attend WHERE MONTH(started) = MONTH(NOW())-1 AND account = '${account}' GROUP BY sid;`
+  let teachers = `SELECT * FROM teachers WHERE account = '${account}';`
+  let usersPerTeachers = `SELECT subjects.tid, count(*) as count FROM subjects LEFT JOIN teachers ON subjects.tid = teachers.tid LEFT JOIN attend ON attend.sid = subjects.sid WHERE MONTH(started) = MONTH(NOW()) AND subjects.account = '${account}' GROUP BY attend.sid;`
+
+  // select subjects.tid, count(*) from subjects left join teachers on subjects.tid = teachers.tid left join attend on attend.sid = subjects.sid where MONTH(started) = MONTH(NOW()) group by subjects.tid;
+  
+  db.query(getSidebar + totalUsers + totalUsersPrev + newUsers + newUsersPrev + nonpayers + todayUsers + todaySubjects + subjects + usersPerSubjects + usersPerSubjectsPrev + teachers + usersPerTeachers, (err, result) => {
+    let [ sidebar, totalUsers, totalUsersPrev, newUsers, newUsersPrev, nonpayers, todayUsers, todaySubjects, subjects, usersPerSubjects, usersPerSubjectsPrev, teachers , usersPerTeachers ] = result;
     res.render('pages/dashboard', {
       title: '홈',
       account: req.user,
       sidebar,
-      users: '',
       totalUsers,
+      totalUsersPrev,
       newUsers,
+      newUsersPrev,
       nonpayers,
-      nowTotals,
-      prevTotals,
-      subject
+      todayUsers,
+      todaySubjects,
+      subjects,
+      usersPerSubjects,
+      usersPerSubjectsPrev,
+      teachers,
+      usersPerTeachers
     });
   });
 });

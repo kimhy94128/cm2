@@ -32,21 +32,29 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% if(subject){ %>
-                  <% subject.forEach(list => { %>
+                  <% if(subjects){ %>
+                  <% subjects.forEach(list => { %>
                     <tr>
                       <td><%= list.s_name %> (<%= list.type %>)</td>
                       <td>
-                        <% nowTotals.forEach(user => { %>
-                          <% if(list.sid === user.sid){ %>
-                            <%= user.count %>명
-                          <% } %> 
-                        <% }) %>
+                        <% usersPerSubjects.forEach(subject => { %>
+                          <% if(subject.sid === list.sid){ %>
+                            <%= subject.count %>명
+                          <% } %>
+                        <% }) %> 
                       </td>
                       <td>
+                        <% usersPerSubjectsPrev.forEach(subject => { %>
+                          <% if(subject.sid === list.sid){ %>
+                            <%= subject.count %>명
+                          <% } %> 
+                        <% }) %> 
                       </td>
                     </tr>
                   <% }) %> 
+                  <% } else { %>
+                    <td></td>
+                    <td></td>
                   <% } %>
                 </tbody>
               </table>
@@ -72,10 +80,18 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <% teachers.forEach(list => { %>
                   <tr>
-                    <td>홍길동</td>
-                    <td>60명</td>
+                    <td><%= list.name %></td>
+                    <td>
+                      <% usersPerTeachers.forEach(teacher => { %>
+                        <% if(teacher.tid === list.tid){ %>
+                          <%= teacher.count %>명
+                        <% } %> 
+                      <% }) %> 
+                    </td>
                   </tr>
+                  <% }) %>
                 </tbody>
               </table>
             </div>
