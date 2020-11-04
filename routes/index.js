@@ -26,8 +26,6 @@ router.get('/', isLoggedIn, (req, res) => {
   let teachers = `SELECT * FROM teachers WHERE account = '${account}';`
   let usersPerTeachers = `SELECT subjects.tid, count(*) as count FROM subjects LEFT JOIN teachers ON subjects.tid = teachers.tid LEFT JOIN attend ON attend.sid = subjects.sid WHERE MONTH(started) = MONTH(NOW()) AND subjects.account = '${account}' GROUP BY attend.sid;`
 
-  // select subjects.tid, count(*) from subjects left join teachers on subjects.tid = teachers.tid left join attend on attend.sid = subjects.sid where MONTH(started) = MONTH(NOW()) group by subjects.tid;
-  
   db.query(getSidebar + totalUsers + totalUsersPrev + newUsers + newUsersPrev + nonpayers + todayUsers + todaySubjects + subjects + usersPerSubjects + usersPerSubjectsPrev + teachers + usersPerTeachers, (err, result) => {
     let [ sidebar, totalUsers, totalUsersPrev, newUsers, newUsersPrev, nonpayers, todayUsers, todaySubjects, subjects, usersPerSubjects, usersPerSubjectsPrev, teachers , usersPerTeachers ] = result;
     res.render('pages/dashboard', {

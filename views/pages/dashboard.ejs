@@ -80,18 +80,20 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% teachers.forEach(list => { %>
-                  <tr>
-                    <td><%= list.name %></td>
-                    <td>
-                      <% usersPerTeachers.forEach(teacher => { %>
-                        <% if(teacher.tid === list.tid){ %>
-                          <%= teacher.count %>명
-                        <% } %> 
-                      <% }) %> 
-                    </td>
-                  </tr>
-                  <% }) %>
+                  <% if(teachers){ %>
+                    <% teachers.forEach(list => { %>
+                    <tr>
+                      <td><%= list.name %></td>
+                      <td>
+                        <% usersPerTeachers.forEach(teacher => { %>
+                          <% if(teacher.tid === list.tid){ %>
+                            <%= teacher.count %>명
+                          <% } %> 
+                        <% }) %> 
+                      </td>
+                    </tr>
+                    <% }) %>
+                  <% } %> 
                 </tbody>
               </table>
             </div>

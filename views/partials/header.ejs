@@ -20,6 +20,8 @@
               <p class="mt-3 mb-0 text-muted text-sm">
                 <% if(totalUsers.length - totalUsersPrev.length > 0){ %>
                   <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> <%= totalUsers.length - totalUsersPrev.length %></span>
+                <% } else if (totalUsers.length - totalUsersPrev.length === 0) { %>
+                  <span class="text-primary mr-2"><i class="fas fa-minus"></i> <%= totalUsers.length - totalUsersPrev.length %></span>
                 <% } else { %>
                   <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> <%= Math.abs(totalUsers.length - totalUsersPrev.length) %></span>
                 <% } %>
@@ -44,6 +46,8 @@
               <p class="mt-3 mb-0 text-muted text-sm">
                 <% if(newUsers.length - newUsersPrev.length > 0){ %>
                   <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> <%= newUsers.length - newUsersPrev.length %></span>
+                <% } else if (newUsers.length - newUsersPrev.length === 0) { %>
+                  <span class="text-primary mr-2"><i class="fas fa-minus"></i> <%= newUsers.length - newUsersPrev.length %></span>
                 <% } else { %>
                   <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> <%= Math.abs(newUsers.length - newUsersPrev.length) %></span>
                 <% } %>
@@ -86,7 +90,7 @@
                 </div>
               </div>
               <p class="mt-3 mb-0 text-muted text-sm">
-                <% if(todaySubjects){ %>
+                <% if(todaySubjects[0] !== undefined){ %>
                   <span class="text-nowrap"><%= todaySubjects[0].s_name %>반 외 <%= todaySubjects.length %>건</span>
                 <% } else { %>
                   <span class="text-nowrap">진행되는 수업이 없습니다.</span>
