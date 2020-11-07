@@ -22,16 +22,22 @@ router.get('/:sid', isLoggedIn, (req, res) => {
     const [sidebar, users, tit] = result;
     const title = `${tit[0].s_name} (${tit[0].type}) 출석부`
 
-    const dateRange = () => {
+    const makeRollBook = (date) => {
       const days = [];
-      const s_date = new Date('2020-10-01');
-      const e_date = new Date('2020-10-31');
-
-      while(s_date.getTime() <= e_date.getTime()){
-        days.push(
-          `${s_date.getFullYear()}-${s_date.getMonth()+1 < 10 ? `0${s_date.getMonth()+1}` : s_date.getMonth()+1}-${s_date.getDate() < 10 ? `0${s_date.getDate()}` : s_date.getDate()}`
-        )
-        s_date.setDate(s_date.getDate() + 1)
+      if(date === undefined){
+        date = new Date()
+      } else {
+        date = new Date(date)
+      }
+      
+      const monthStart = new Date(date.setDate(1))
+      date.setMonth(date.getMonth()+1)
+      date.setDate(0)
+      const monthEnd = date
+    
+      while(monthStart.getTime() <= monthEnd.getTime()){
+        days.push(`${monthStart.getFullYear()}-${monthStart.getMonth()+1 < 10 ? `0${monthStart.getMonth()+1}` : monthStart.getMonth()+1}-${monthStart.getDate() < 10 ? `0${monthStart.getDate()}` : monthStart.getDate()}`);
+        monthStart.setDate(monthStart.getDate()+1)
       }
       return days;
     }
@@ -42,7 +48,7 @@ router.get('/:sid', isLoggedIn, (req, res) => {
       sidebar,
       users,
       month,
-      days: dateRange()
+      days: makeRollBook(new Date().setMonth(month))
     })
   })
 })
