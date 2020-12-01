@@ -11,7 +11,7 @@ const getSidebar = `SELECT * FROM sidebar;`
 router.get('/:sid', isLoggedIn, (req, res) => {
   const {sid} = req.params;
   const month = req.query.month || new Date().getMonth();
-  const attendList = `SELECT name, subjects.type, s_name, DATE_FORMAT(started,'%m/%d') AS started, DATE_FORMAT(ended,'%m/%d') AS ended FROM attend
+  const attendList = `SELECT name, subjects.type, s_name, DATE_FORMAT(started,'%m/%d') AS started, DATE_FORMAT(ended,'%m/%d') AS ended, subjects.week FROM attend
   LEFT JOIN users ON users.uid = attend.uid 
   LEFT JOIN subjects ON attend.sid = subjects.sid
   WHERE attend.sid = ? AND MONTH(started)-1 = ?
