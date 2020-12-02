@@ -44,9 +44,11 @@
                     <th>시작일</th>
                     <th>종료일</th>
                     <% days.forEach(day => { %>
-                      <% if(new Date(day).getDay() === 1 || new Date(day).getDay() === 3){ %>
-                        <th scope="col"><%= new Date(day).getMonth()+1 %>/<%= new Date(day).getDate() %></th>
-                      <% } %>
+                      <% tit[0].week.split(',').forEach(num => { %>
+                        <% if(new Date(day).getDay() == num){ %>
+                          <th scope="col"><%= new Date(day).getMonth()+1 %>/<%= new Date(day).getDate() %></th>
+                        <% } %>
+                      <% }) %>
                     <% }) %>
                   </tr>
                 </thead>
@@ -57,11 +59,17 @@
                       <td><%= user.started %></td>
                       <td><%= user.ended %></td>
                       <% days.forEach(day => { %>
-                        <% if(new Date(day).getDay() === 1 || new Date(day).getDay() === 3){ %>
-                          <td>
-                            <input type="checkbox">
-                          </td>
-                        <% } %>
+                        <% tit[0].week.split(',').forEach(num => { %>
+                          <% if(new Date(day).getDay() == num){ %>
+                            <td>
+                              <form name="check">
+                                <input type="hidden" name="uid" value="<%= user.uid %>">
+                                <input type="hidden" name="sid" value="<%= tit[0].sid %>">
+                                <input type="checkbox" name="check" value="<%= day %>" onchange="checkIn(this)">
+                              </form>
+                            </td>
+                          <% } %>
+                        <% }) %>
                       <% }) %>
                     </tr>
                   <% }) %> 
@@ -97,11 +105,24 @@
         </div>
       </div>
 
-    
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
       <script>
         document.querySelector('select[name=month]').addEventListener('change', function(){
           location.search = 'month=' + this.value;
         })
+        function checkIn(check){
+          const form = document.querySelector('form[name=check]')
+          const data = {
+            uid : form.uid.value,
+            sid : form.sid.value,
+            date : check.value
+          }
+          if(form.check.checked === true){
+            axios.post('/rollbook/check', data)
+          } else {
+            axios.post('/rollbook/delete', data)
+          }
+        }
       </script>
       
       <!-- Footer -->

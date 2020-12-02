@@ -55,7 +55,9 @@
                     <% }) %>
                   </td>
                   <td><%= list.price %></td>
-                  <td><%= list.week %></td>
+                  <td>
+                    <%= list.week.split(',').map(day => weeks[day-1]) %>
+                  </td>
                   <td><%= list.time %></td>
                   <td>
                     <div class="dropdown">
@@ -149,25 +151,25 @@
                       <label class="form-control-label" for="input-name">요일</label>
                       <div class="btn-group btn-group-toggle mt-2" data-toggle="buttons">
                         <label class="btn btn-secondary btn-sm">
-                          <input type="checkbox" name="week" value="월" autocomplete="off"> 월
+                          <input type="checkbox" name="week" value="1" autocomplete="off"> 월
                         </label>
                         <label class="btn btn-secondary btn-sm">
-                          <input type="checkbox" name="week" value="화" autocomplete="off"> 화
+                          <input type="checkbox" name="week" value="2" autocomplete="off"> 화
                         </label>
                         <label class="btn btn-secondary btn-sm">
-                          <input type="checkbox" name="week" value="수" autocomplete="off"> 수
+                          <input type="checkbox" name="week" value="3" autocomplete="off"> 수
                         </label>
                         <label class="btn btn-secondary btn-sm">
-                          <input type="checkbox" name="week" value="목" autocomplete="off"> 목
+                          <input type="checkbox" name="week" value="4" autocomplete="off"> 목
                         </label>
                         <label class="btn btn-secondary btn-sm">
-                          <input type="checkbox" name="week" value="금" autocomplete="off"> 금
+                          <input type="checkbox" name="week" value="5" autocomplete="off"> 금
                         </label>
                         <label class="btn btn-secondary btn-sm">
-                          <input type="checkbox" name="week" value="토" autocomplete="off"> 토
+                          <input type="checkbox" name="week" value="6" autocomplete="off"> 토
                         </label>
                         <label class="btn btn-secondary btn-sm">
-                          <input type="checkbox" name="week" value="일" autocomplete="off"> 일
+                          <input type="checkbox" name="week" value="7" autocomplete="off"> 일
                         </label>
                       </div>
                     </div>
@@ -238,11 +240,11 @@
                       <div class="form-group">
                         <label class="form-control-label" for="input-name">요일</label>
                         <div class="btn-group btn-group-toggle mt-2" data-toggle="buttons">
-                          <% weeks.forEach(week => { %>
-                            <label class="btn btn-secondary btn-sm <%= list.week.indexOf(week) > -1 ? 'active' : '' %>">
-                              <input type="checkbox" name="week" value="<%= week %>" autocomplete="off" <%= list.week.indexOf(week) > -1 ? 'checked' : '' %>><%= week %>
+                          <% for(i=1; i<8; i++){ %>
+                            <label class="btn btn-secondary btn-sm <%= list.week.indexOf(i) > -1 ? 'active' : '' %>">
+                              <input type="checkbox" name="week" value="<%= i %>" autocomplete="off" <%= list.week.indexOf(i) > -1 ? 'checked' : '' %>><%= weeks[i-1] %>
                             </label>
-                          <% }) %>
+                          <% } %>
                         </div>  
                       </div>
                     </div>

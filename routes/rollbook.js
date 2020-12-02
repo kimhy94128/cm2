@@ -11,12 +11,12 @@ const getSidebar = `SELECT * FROM sidebar;`
 router.get('/:sid', isLoggedIn, (req, res) => {
   const {sid} = req.params;
   const month = req.query.month || new Date().getMonth();
-  const attendList = `SELECT name, subjects.type, s_name, DATE_FORMAT(started,'%m/%d') AS started, DATE_FORMAT(ended,'%m/%d') AS ended, subjects.week FROM attend
+  const attendList = `SELECT users.uid, name, subjects.type, s_name, DATE_FORMAT(started,'%m/%d') AS started, DATE_FORMAT(ended,'%m/%d') AS ended FROM attend
   LEFT JOIN users ON users.uid = attend.uid 
   LEFT JOIN subjects ON attend.sid = subjects.sid
   WHERE attend.sid = ? AND MONTH(started)-1 = ?
   AND attend.account = '${req.user.userID}';`
-  const titleText = `SELECT distinct s_name, type from attend left join subjects on attend.sid = subjects.sid WHERE subjects.sid = ? AND attend.account = '${req.user.userID}';`
+  const titleText = `SELECT distinct s_name, type, subjects.week, subjects.sid from attend left join subjects on attend.sid = subjects.sid WHERE subjects.sid = ? AND attend.account = '${req.user.userID}';`
   db.query(getSidebar + attendList + titleText, [sid, month, sid], (err, result) => {
     if(err) console.log(err);
     const [sidebar, users, tit] = result;
@@ -44,12 +44,27 @@ router.get('/:sid', isLoggedIn, (req, res) => {
 
     res.render('pages/rollbook', {
       title,
+      tit,
       account: req.user,
       sidebar,
       users,
       month,
       days: makeRollBook(new Date().setMonth(month))
     })
+  })
+})
+
+router.post('/check', (req, res) => {
+  db.query('INSERT INTO rollbook SET ?', [req.body], (err, result) => {
+    if(err) console.log(err);
+    res.status(200).json({ success: true })
+  })
+})
+router.post('/delete', (req, res) => {
+  const { uid, sid, date } = req.body;
+  db.query('DELETE FROM rollbook WHERE uid = ? AND sid = ? AND date = ?', [ parseInt(uid), parseInt(sid), date], (err, result) => {
+    if(err) console.log(err);
+    res.status(200).json({ success: true })
   })
 })
 
