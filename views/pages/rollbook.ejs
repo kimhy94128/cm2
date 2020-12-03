@@ -20,8 +20,16 @@
                 <div class="col-8">
                   <h3 class="mb-0">출석부</h3>
                 </div>
-                <div class="col-4 text-right">
-                  <select name="month">
+                <div class="col-2 text-right">
+                  <select name="year" class="form-control form-control-alternative">
+                    <option value="2020" selected>2020</option>
+                    <% for(i=2019; i>=2015; i--){ %>
+                      <option value=<%= i %>><%= i %></option>
+                    <% } %> 
+                  </select>
+                  </div>
+                  <div class="col-2 text-right">
+                  <select name="month" class="form-control form-control-alternative">
                     <option>선택</option>
                     <% for(i=0; i<12; i++){ %>
                       <option value="<%= i %>"
@@ -32,7 +40,7 @@
                         <% } %>
                         ><%= i+1 %></option>
                     <% } %> 
-                  </select> 월
+                  </select>
                 </div>
               </div>
             </div>
@@ -53,7 +61,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% users.forEach(user => { %>
+                  <% users.forEach((user) => { %>
+
                     <tr>
                       <td><%= user.name %></td>
                       <td><%= user.started %></td>
@@ -65,13 +74,20 @@
                               <form name="check">
                                 <input type="hidden" name="uid" value="<%= user.uid %>">
                                 <input type="hidden" name="sid" value="<%= tit[0].sid %>">
-                                <input type="checkbox" name="check" value="<%= day %>" onchange="checkIn(this)">
+                                <input type="checkbox" name="check" value="<%= day %>"
+                                  <% rollbooks.forEach(checked => { %>
+                                    <% if(checked.uid === user.uid && checked.sid === tit[0].sid && checked.date === day){ %>
+                                      checked
+                                    <%} %> 
+                                  <% }) %> 
+                                onchange="checkIn(this)">
                               </form>
                             </td>
                           <% } %>
                         <% }) %>
                       <% }) %>
                     </tr>
+
                   <% }) %> 
                 </tbody>
               </table>
@@ -108,12 +124,13 @@
       <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
       <script>
         document.querySelector('select[name=month]').addEventListener('change', function(){
-          location.search = 'month=' + this.value;
+          const year = document.querySelector('select[name=year]').value;
+          location.search = 'year=' + year + '&month=' + this.value;
         })
         function checkIn(check){
           const form = document.querySelector('form[name=check]')
           const data = {
-            uid : form.uid.value,
+            uid: check.parentNode.uid.value,
             sid : form.sid.value,
             date : check.value
           }
